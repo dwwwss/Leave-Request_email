@@ -1,0 +1,57 @@
+﻿@model WORKFLOW.Models.Loginmodel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <style>
+        body {
+            background-color: blue;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 25vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form action="~/Account/Login" method="post">
+            <h2>Login</h2>
+
+            <div>
+                <label for="Username" style="font-weight: bold; margin-bottom: 10px; display: block;">Username</label>
+                <input type="text" id="Username" name="Username" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px;" />
+            </div>
+            <div>
+                <label for="Password" style="font-weight: bold; margin-bottom: 10px; display: block;">Password</label>
+                <input type="password" id="Password" name="Password" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px;" />
+            </div>
+            <button type="submit" style="background-color: #007bff; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">Login</button>
+           
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WorkFlowModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="LeaveRequest">
+    <Key>
+      <PropertyRef Name="leave_request_Id" />
+    </Key>
+    <Property Name="leave_request_Id" Type="Int32" Nullable="false" />
+    <Property Name="fk_user_id" Type="Int32" />
+    <Property Name="start_date" Type="DateTime" Precision="0" />
+    <Property Name="end_date" Type="DateTime" Precision="0" />
+    <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="leave_status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="approval_date" Type="DateTime" Precision="3" />
+    <Property Name="fk_approverid_user_id" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="Self.FK__LeaveRequ__fk_ap__72C60C4A" FromRole="LeaveRequest" ToRole="Users" />
+    <NavigationProperty Name="User1" Relationship="Self.FK__LeaveRequ__fk_us__71D1E811" FromRole="LeaveRequest" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="LeaveType">
+    <Key>
+      <PropertyRef Name="leave_type_id" />
+    </Key>
+    <Property Name="leave_type_id" Type="Int32" Nullable="false" />
+    <Property Name="leave_type_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="position" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="isactive_status" Type="Boolean" />
+    <NavigationProperty Name="LeaveRequests" Relationship="Self.FK__LeaveRequ__fk_ap__72C60C4A" FromRole="Users" ToRole="LeaveRequest" />
+    <NavigationProperty Name="LeaveRequests1" Relationship="Self.FK__LeaveRequ__fk_us__71D1E811" FromRole="Users" ToRole="LeaveRequest" />
+  </EntityType>
+  <Association Name="FK__LeaveRequ__fk_ap__72C60C4A">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="LeaveRequest" Type="Self.LeaveRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="LeaveRequest">
+        <PropertyRef Name="fk_approverid_user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__LeaveRequ__fk_us__71D1E811">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="LeaveRequest" Type="Self.LeaveRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="LeaveRequest">
+        <PropertyRef Name="fk_user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="WorkFlowEntities2" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="LeaveRequests" EntityType="Self.LeaveRequest" />
+    <EntitySet Name="LeaveTypes" EntityType="Self.LeaveType" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK__LeaveRequ__fk_ap__72C60C4A" Association="Self.FK__LeaveRequ__fk_ap__72C60C4A">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="LeaveRequest" EntitySet="LeaveRequests" />
+    </AssociationSet>
+    <AssociationSet Name="FK__LeaveRequ__fk_us__71D1E811" Association="Self.FK__LeaveRequ__fk_us__71D1E811">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="LeaveRequest" EntitySet="LeaveRequests" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

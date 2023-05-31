@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="WorkFlowModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="LeaveRequest">
+          <Key>
+            <PropertyRef Name="leave_request_Id" />
+          </Key>
+          <Property Name="leave_request_Id" Type="int" Nullable="false" />
+          <Property Name="fk_user_id" Type="int" />
+          <Property Name="start_date" Type="date" />
+          <Property Name="end_date" Type="date" />
+          <Property Name="Description" Type="varchar" MaxLength="100" />
+          <Property Name="leave_status" Type="varchar" MaxLength="20" />
+          <Property Name="approval_date" Type="datetime" />
+          <Property Name="fk_approverid_user_id" Type="int" />
+        </EntityType>
+        <EntityType Name="LeaveTypes">
+          <Key>
+            <PropertyRef Name="leave_type_id" />
+          </Key>
+          <Property Name="leave_type_id" Type="int" Nullable="false" />
+          <Property Name="leave_type_name" Type="varchar" MaxLength="50" />
+          <Property Name="description" Type="text" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+          <Property Name="email" Type="varchar" MaxLength="100" />
+          <Property Name="position" Type="varchar" MaxLength="100" />
+          <Property Name="isactive_status" Type="bit" />
+        </EntityType>
+        <Association Name="FK__LeaveRequ__fk_ap__72C60C4A">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="LeaveRequest" Type="Self.LeaveRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="LeaveRequest">
+              <PropertyRef Name="fk_approverid_user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LeaveRequ__fk_us__71D1E811">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="LeaveRequest" Type="Self.LeaveRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="LeaveRequest">
+              <PropertyRef Name="fk_user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WorkFlowModelStoreContainer">
+          <EntitySet Name="LeaveRequest" EntityType="Self.LeaveRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LeaveTypes" EntityType="Self.LeaveTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__LeaveRequ__fk_ap__72C60C4A" Association="Self.FK__LeaveRequ__fk_ap__72C60C4A">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="LeaveRequest" EntitySet="LeaveRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LeaveRequ__fk_us__71D1E811" Association="Self.FK__LeaveRequ__fk_us__71D1E811">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="LeaveRequest" EntitySet="LeaveRequest" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WorkFlowModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="LeaveRequest">
+          <Key>
+            <PropertyRef Name="leave_request_Id" />
+          </Key>
+          <Property Name="leave_request_Id" Type="Int32" Nullable="false" />
+          <Property Name="fk_user_id" Type="Int32" />
+          <Property Name="start_date" Type="DateTime" Precision="0" />
+          <Property Name="end_date" Type="DateTime" Precision="0" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="leave_status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="approval_date" Type="DateTime" Precision="3" />
+          <Property Name="fk_approverid_user_id" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="Self.FK__LeaveRequ__fk_ap__72C60C4A" FromRole="LeaveRequest" ToRole="Users" />
+          <NavigationProperty Name="User1" Relationship="Self.FK__LeaveRequ__fk_us__71D1E811" FromRole="LeaveRequest" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="LeaveType">
+          <Key>
+            <PropertyRef Name="leave_type_id" />
+          </Key>
+          <Property Name="leave_type_id" Type="Int32" Nullable="false" />
+          <Property Name="leave_type_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="position" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="isactive_status" Type="Boolean" />
+          <NavigationProperty Name="LeaveRequests" Relationship="Self.FK__LeaveRequ__fk_ap__72C60C4A" FromRole="Users" ToRole="LeaveRequest" />
+          <NavigationProperty Name="LeaveRequests1" Relationship="Self.FK__LeaveRequ__fk_us__71D1E811" FromRole="Users" ToRole="LeaveRequest" />
+        </EntityType>
+        <Association Name="FK__LeaveRequ__fk_ap__72C60C4A">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="LeaveRequest" Type="Self.LeaveRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="LeaveRequest">
+              <PropertyRef Name="fk_approverid_user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LeaveRequ__fk_us__71D1E811">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="LeaveRequest" Type="Self.LeaveRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="LeaveRequest">
+              <PropertyRef Name="fk_user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WorkFlowEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="LeaveRequests" EntityType="Self.LeaveRequest" />
+          <EntitySet Name="LeaveTypes" EntityType="Self.LeaveType" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK__LeaveRequ__fk_ap__72C60C4A" Association="Self.FK__LeaveRequ__fk_ap__72C60C4A">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="LeaveRequest" EntitySet="LeaveRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LeaveRequ__fk_us__71D1E811" Association="Self.FK__LeaveRequ__fk_us__71D1E811">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="LeaveRequest" EntitySet="LeaveRequests" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WorkFlowModelStoreContainer" CdmEntityContainer="WorkFlowEntities2">
+          <EntitySetMapping Name="LeaveRequests">
+            <EntityTypeMapping TypeName="WorkFlowModel.LeaveRequest">
+              <MappingFragment StoreEntitySet="LeaveRequest">
+                <ScalarProperty Name="leave_request_Id" ColumnName="leave_request_Id" />
+                <ScalarProperty Name="fk_user_id" ColumnName="fk_user_id" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="leave_status" ColumnName="leave_status" />
+                <ScalarProperty Name="approval_date" ColumnName="approval_date" />
+                <ScalarProperty Name="fk_approverid_user_id" ColumnName="fk_approverid_user_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LeaveTypes">
+            <EntityTypeMapping TypeName="WorkFlowModel.LeaveType">
+              <MappingFragment StoreEntitySet="LeaveTypes">
+                <ScalarProperty Name="leave_type_id" ColumnName="leave_type_id" />
+                <ScalarProperty Name="leave_type_name" ColumnName="leave_type_name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="WorkFlowModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="WorkFlowModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="isactive_status" ColumnName="isactive_status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

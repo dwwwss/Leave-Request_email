@@ -1,0 +1,199 @@
+﻿
+<h2>Welcome, @ViewBag.User.name!</h2>
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Filter Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+    <style>
+        /* CSS styles for alignment and spacing */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background-color: #ddd;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .navbar a {
+                color: #000;
+                text-align: center;
+                padding: 10px 20px;
+                text-decoration: none;
+                font-size: 18px;
+            }
+
+                .navbar a:hover {
+                    background-color: #ddd;
+                }
+
+        .apply-button {
+            display: flex;
+            align-items: center;
+        }
+
+            .apply-button button {
+                margin-left: 10px;
+                padding: 10px;
+                font-size: 18px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+
+                .apply-button button:hover {
+                    background-color: #45A049;
+                }
+
+        .filter-buttons button {
+            margin: 10px 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .filter-buttons {
+            text-align: center;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #F2F2F2;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .mt-4 {
+            margin-top: 4rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div>
+            <a class="navbar-brand" href="@Url.Action("Index", "Account")">Home</a>
+        </div>
+        <div class="apply-button">
+            <a href="@Url.Action("Request", "Account")">
+                <button class="btn btn-primary" title="Apply Request">Apply Request</button>
+            </a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="filter-buttons">
+            <button class="btn btn-primary" onclick="filterTable('all')">All</button>
+            <button class="btn btn-primary" onclick="filterTable('approved')">Approved</button>
+            <button class="btn btn-primary" onclick="filterTable('declined')">Declined</button>
+            <button class="btn btn-primary" onclick="filterTable('pending')">Pending</button>
+        </div>
+        <div class="hide">
+            <div class="form-group">
+                <label for="fromDateInput">From Date:</label>
+                <input type="date" id="fromDateInput" class="form-control" onchange="filterTable('all')">
+            </div>
+            <div class="form-group">
+                <label for="toDateInput">To Date:</label>
+                <input type="date" id="toDateInput" class="form-control" onchange="filterTable('all')">
+            </div>
+        </div>
+        <table id="workflow-table" class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Request</th>
+                    <th>Status</th>
+                    <th>From Date</th>
+                    <th>To Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var serialNumber = 1;
+                }
+                @foreach (var leaveRequest in ViewBag.LeaveRequests)
+                {
+                    <tr>
+                        <td>@serialNumber</td>
+                        <td>@leaveRequest.Description</td>
+                        <td>@leaveRequest.leave_status</td>
+                        <td>@leaveRequest.start_date</td>
+                        <td>@leaveRequest.end_date</td>
+                    </tr>
+                    serialNumber++;
+                }
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script>
+        function filterTable(status) {
+            var fromDate = document.getElementById("fromDateInput").value;
+            var toDate = document.getElementById("toDateInput").value;
+            var table = document.getElementById("workflow-table");
+            var rows = table.getElementsByTagName("tr");
+            for (var i = 1; i < rows.length; i++) {
+                var row = rows[i];
+                var statusCell = row.getElementsByTagName("td")[2];
+                var fromDateCell = row.getElementsByTagName("td")[3];
+                var toDateCell = row.getElementsByTagName("td")[4];
+                var statusText = statusCell.textContent || statusCell.innerText;
+                var fromDateText = fromDateCell.textContent || fromDateCell.innerText;
+                var toDateText = toDateCell.textContent || toDateCell.innerText;
+                if (
+                    (status === "all" || statusText.toLowerCase() === status.toLowerCase()) &&
+                    (fromDate === "" || fromDateText >= fromDate) &&
+                    (toDate === "" || toDateText <= toDate)
+                ) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

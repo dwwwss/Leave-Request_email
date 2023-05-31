@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WorkFlowModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="LeaveApproval">
+    <Key>
+      <PropertyRef Name="approval_id" />
+    </Key>
+    <Property Name="approval_id" Type="Int32" Nullable="false" />
+    <Property Name="request_id" Type="Int32" />
+    <Property Name="user_id" Type="Int32" />
+    <Property Name="approval_date" Type="DateTime" Precision="0" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="LeaveRequest" Relationship="Self.FK__LeaveAppr__reque__5DCAEF64" FromRole="LeaveApproval" ToRole="LeaveRequests" />
+    <NavigationProperty Name="User" Relationship="Self.FK__LeaveAppr__user___5EBF139D" FromRole="LeaveApproval" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="LeaveRequest">
+    <Key>
+      <PropertyRef Name="request_id" />
+    </Key>
+    <Property Name="request_id" Type="Int32" Nullable="false" />
+    <Property Name="user_id" Type="Int32" />
+    <Property Name="start_date" Type="DateTime" Precision="0" />
+    <Property Name="end_date" Type="DateTime" Precision="0" />
+    <Property Name="leave_type_id" Type="Int32" />
+    <Property Name="reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="LeaveApprovals" Relationship="Self.FK__LeaveAppr__reque__5DCAEF64" FromRole="LeaveRequests" ToRole="LeaveApproval" />
+    <NavigationProperty Name="LeaveType" Relationship="Self.FK__LeaveRequ__leave__5AEE82B9" FromRole="LeaveRequests" ToRole="LeaveTypes" />
+    <NavigationProperty Name="User" Relationship="Self.FK__LeaveRequ__user___59FA5E80" FromRole="LeaveRequests" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="LeaveStatus">
+    <Key>
+      <PropertyRef Name="status_id" />
+    </Key>
+    <Property Name="status_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="status_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="LeaveType">
+    <Key>
+      <PropertyRef Name="leave_type_id" />
+    </Key>
+    <Property Name="leave_type_id" Type="Int32" Nullable="false" />
+    <Property Name="leave_type_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="LeaveRequests" Relationship="Self.FK__LeaveRequ__leave__5AEE82B9" FromRole="LeaveTypes" ToRole="LeaveRequests" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="position" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="active_status" Type="Boolean" />
+    <NavigationProperty Name="LeaveApprovals" Relationship="Self.FK__LeaveAppr__user___5EBF139D" FromRole="Users" ToRole="LeaveApproval" />
+    <NavigationProperty Name="LeaveRequests" Relationship="Self.FK__LeaveRequ__user___59FA5E80" FromRole="Users" ToRole="LeaveRequests" />
+  </EntityType>
+  <Association Name="FK__LeaveAppr__reque__5DCAEF64">
+    <End Role="LeaveRequests" Type="Self.LeaveRequest" Multiplicity="0..1" />
+    <End Role="LeaveApproval" Type="Self.LeaveApproval" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LeaveRequests">
+        <PropertyRef Name="request_id" />
+      </Principal>
+      <Dependent Role="LeaveApproval">
+        <PropertyRef Name="request_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__LeaveAppr__user___5EBF139D">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="LeaveApproval" Type="Self.LeaveApproval" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="LeaveApproval">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__LeaveRequ__leave__5AEE82B9">
+    <End Role="LeaveTypes" Type="Self.LeaveType" Multiplicity="0..1" />
+    <End Role="LeaveRequests" Type="Self.LeaveRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LeaveTypes">
+        <PropertyRef Name="leave_type_id" />
+      </Principal>
+      <Dependent Role="LeaveRequests">
+        <PropertyRef Name="leave_type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__LeaveRequ__user___59FA5E80">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="LeaveRequests" Type="Self.LeaveRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="LeaveRequests">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="WorkFlowEntities2" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="LeaveApprovals" EntityType="Self.LeaveApproval" />
+    <EntitySet Name="LeaveRequests" EntityType="Self.LeaveRequest" />
+    <EntitySet Name="LeaveStatuses" EntityType="Self.LeaveStatus" />
+    <EntitySet Name="LeaveTypes" EntityType="Self.LeaveType" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK__LeaveAppr__reque__5DCAEF64" Association="Self.FK__LeaveAppr__reque__5DCAEF64">
+      <End Role="LeaveRequests" EntitySet="LeaveRequests" />
+      <End Role="LeaveApproval" EntitySet="LeaveApprovals" />
+    </AssociationSet>
+    <AssociationSet Name="FK__LeaveAppr__user___5EBF139D" Association="Self.FK__LeaveAppr__user___5EBF139D">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="LeaveApproval" EntitySet="LeaveApprovals" />
+    </AssociationSet>
+    <AssociationSet Name="FK__LeaveRequ__leave__5AEE82B9" Association="Self.FK__LeaveRequ__leave__5AEE82B9">
+      <End Role="LeaveTypes" EntitySet="LeaveTypes" />
+      <End Role="LeaveRequests" EntitySet="LeaveRequests" />
+    </AssociationSet>
+    <AssociationSet Name="FK__LeaveRequ__user___59FA5E80" Association="Self.FK__LeaveRequ__user___59FA5E80">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="LeaveRequests" EntitySet="LeaveRequests" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
